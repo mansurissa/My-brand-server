@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import errorRes from "../helpers/errorHandler";
-import successHandler from "../helpers/success";
-import User from "../models/usersModel";
+import errorRes from "../helpers/errorHandler.js";
+import successHandler from "../helpers/success.js";
+import User from "../models/usersModel.js";
 
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -76,6 +76,16 @@ export const getAllUsers = async (req, res) => {
     });
   } catch (error) {}
   errorRes(res, 500, "failed to get users");
+};
+export const getOneUSer = async (req, res) => {
+  try {
+    const foundUser = await User.findById(req.params.id);
+    if (!foundUser) return errorRes(res, 404, "User not found");
+    return successHandler(res, 200, "Successfully got one user", foundUser);
+  } catch (error) {
+    console.log(error);
+    return errorRes(res, 500, "there was problem getting user ");
+  }
 };
 
 export const deleteUser = async (req, res) => {

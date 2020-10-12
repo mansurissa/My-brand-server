@@ -5,7 +5,7 @@ import {
   getAllPosts,
   getOnePost,
   updatePost,
-} from "../controllers/superBlog";
+} from "../controllers/superBlog.js";
 
 const blogRouter = express.Router();
 blogRouter.route("/").post(create).get(getAllPosts);
