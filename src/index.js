@@ -9,9 +9,12 @@ import usersRouter from "./routes/usersRouter";
 import connectDb from "./config/database";
 import errorRes from "./helpers/errorHandler";
 
-config();
+dotenv.config();
+
 const app = express();
-app.use(json());
+
+// app.use(express-fileupload)
+app.use(express.json());
 app.use(cors());
 app.use(morgan("dev"));
 // passport.use(passport.initialize());
