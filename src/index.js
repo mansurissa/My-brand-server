@@ -1,19 +1,17 @@
-import express, { json } from "express";
-import { config } from "dotenv";
+import express from "express";
+import dotenv from "dotenv";
 import cors from "cors";
 import morgan from "morgan";
 // import passport from "passport";
 // import jwtStrategy from "./config/passport";
-import blogRouter from "./routes/blogRouter";
-import usersRouter from "./routes/usersRouter";
-import connectDb from "./config/database";
-import errorRes from "./helpers/errorHandler";
+import blogRouter from "./routes/blogRouter.js";
+import usersRouter from "./routes/usersRouter.js";
+import connectDb from "./config/database.js";
+import errorRes from "./helpers/errorHandler.js";
 
 dotenv.config();
-
 const app = express();
 
-// app.use(express-fileupload)
 app.use(express.json());
 app.use(cors());
 app.use(morgan("dev"));

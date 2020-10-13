@@ -1,6 +1,6 @@
-import errorRes from "../helpers/errorHandler";
-import successHandler from "../helpers/success";
-import Post from "../models/blogModel";
+import errorRes from "../helpers/errorHandler.js";
+import successHandler from "../helpers/success.js";
+import Post from "../models/blogModel.js";
 
 export const create = async (req, res) => {
   const { title, body } = req.body;
