@@ -10,7 +10,9 @@ import connectDb from "./config/database.js";
 import errorRes from "./helpers/errorHandler.js";
 
 dotenv.config();
+ chore-removing-babel
 const app = express();
+
 app.use(express.json());
 app.use(cors());
 app.use(morgan("dev"));
