@@ -1,9 +1,12 @@
-import errorRes from "../helpers/errorHandler.js";
-import successHandler from "../helpers/success.js";
-import Post from "../models/blogModel.js";
-import { uploader } from "../config/cloudinary.js";
-import Comment from "../models/comments.js";
-import Subscriber from "../models/subscribers.js";
+/* eslint-disable import/extensions */
+/* eslint-disable no-shadow */
+/* eslint-disable no-underscore-dangle */
+import errorRes from '../helpers/errorHandler.js';
+import successHandler from '../helpers/success.js';
+import Post from '../models/blogModel.js';
+import uploader from '../config/cloudinary.js';
+import Comment from '../models/comments.js';
+import Subscriber from '../models/subscribers.js';
 
 export const create = async (req, res) => {
   const { title, body } = req.body;
@@ -11,7 +14,7 @@ export const create = async (req, res) => {
 
   try {
     if (!title || !body) {
-      return errorRes(res, 500, " some fileds are not filled correctly");
+      errorRes(res, 500, ' some fileds are not filled correctly');
     }
     const result = await uploader.upload(tmp, (_, result) => result);
 
@@ -26,34 +29,34 @@ export const create = async (req, res) => {
       time: Date.now(),
       author: req.user.id,
     });
-    successHandler(res, 201, "new post created successfully", post);
+    successHandler(res, 201, 'new post created successfully', post);
   } catch (error) {
     console.log(error);
-    errorRes(res, 500, "Failed to create a post");
+    errorRes(res, 500, 'Failed to create a post');
   }
 };
 
 export const getAllPosts = async (req, res) => {
   try {
     const posts = await Post.find();
-    successHandler(res, 200, "successfully read all posts", {
+    successHandler(res, 200, 'successfully read all posts', {
       postsCount: posts.length,
       posts,
     });
   } catch (error) {
-    errorRes(res, 500, "there was error getting all posts");
+    errorRes(res, 500, 'there was error getting all posts');
   }
 };
 
 export const getOnePost = async (req, res) => {
   try {
     const onePost = await Post.findById(req.params.id);
-    onePost.views++;
+    onePost.views += 1;
     await onePost.save();
-    successHandler(res, 200, "post got successfully", onePost);
+    return successHandler(res, 200, 'post got successfully', onePost);
   } catch (error) {
     console.log(error);
-    errorRes(res, 404, "not found on posts list");
+    return errorRes(res, 404, 'not found on posts list');
   }
 };
 
@@ -61,13 +64,13 @@ export const deletePost = async (req, res) => {
   const id = req.params._id;
   try {
     const foundPost = await Post.findOne(id);
-    if (!foundPost) return errorRes(res, 404, "cant find that post");
+    if (!foundPost) return errorRes(res, 404, 'cant find that post');
 
     await foundPost.deleteOne();
     if (foundPost.imageId) await uploader.destroy(foundPost.imageId);
-    successHandler(res, 200, "Deleted post successfully");
+    return successHandler(res, 200, 'Deleted post successfully');
   } catch (error) {
-    errorRes(res, 500, "There was error deleting post");
+    return errorRes(res, 500, 'There was error deleting post');
   }
 };
 
@@ -87,44 +90,45 @@ export const updatePost = async (req, res) => {
       imageUrl: result.url,
     });
 
-    successHandler(res, 201, "Updated post successfully", updatedPost);
+    return successHandler(res, 201, 'Updated post successfully', updatedPost);
   } catch (error) {
     console.log(error);
-    errorRes(res, 500, "There was a problem updating post");
+    return errorRes(res, 500, 'There was a problem updating post');
   }
 };
 
 export const comment = async (req, res) => {
   const { name, email, message } = req.body;
   try {
-    if (!email || !message) errorRes(res, 500, "Some filed are not field");
+    if (!email || !message) errorRes(res, 500, 'Some filed are not field');
     const comment = await Comment.create({
       name,
       email,
       message,
     });
     const post = await Post.findById(req.params.id);
+    if (!post) errorRes(res, 404, 'no such post found');
     post.comments.push(comment._id);
-    post.commentsCount++;
+    post.commentsCount += 1;
     await post.save();
 
-    successHandler(res, 201, "successfully commented", comment);
+    successHandler(res, 201, 'successfully commented', comment);
   } catch (error) {
     console.log(error);
-    errorRes(res, 500, "there was error commenting");
+    errorRes(res, 500, 'there was error commenting');
   }
 };
 
 export const like = async (req, res) => {
   try {
     const foundUser = await Post.findById(req.params.id);
-    if (!foundUser) errorRes(res, 404, "cant find that post");
-    foundUser.likes++;
+    if (!foundUser) errorRes(res, 404, 'cant find that post');
+    foundUser.likes += 1;
     await foundUser.save();
-    successHandler(res, 200, "successfully liked");
+    successHandler(res, 200, 'successfully liked');
   } catch (error) {
     console.log(error);
-    errorRes(res, 500, "there was error while liking");
+    errorRes(res, 500, 'there was error while liking');
   }
 };
 
@@ -134,20 +138,20 @@ export const subscribe = async (req, res) => {
       email: req.body.email,
       time: Date.now(),
     });
-    successHandler(res, 201, "Subscribed successfully", subscriber);
+    successHandler(res, 201, 'Subscribed successfully', subscriber);
   } catch (error) {
-    errorRes(res, 500, "There was error while subscribing");
+    errorRes(res, 500, 'There was error while subscribing');
   }
 };
 export const getAllSubscribers = async (req, res) => {
   try {
     const allSubs = await Subscriber.find();
-    successHandler(res, 200, "fetched all subscriber successfully", {
+    successHandler(res, 200, 'fetched all subscriber successfully', {
       subsCount: allSubs.length,
       subscribers: allSubs,
     });
   } catch (error) {
     console.log(error);
-    errorRes(res, 500, "Failed while fetching all subscribers");
+    errorRes(res, 500, 'Failed while fetching all subscribers');
   }
 };

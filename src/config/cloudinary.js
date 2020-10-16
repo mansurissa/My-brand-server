@@ -1,5 +1,5 @@
-import cloudinary from "cloudinary";
+import cloudinary from 'cloudinary';
 
 cloudinary.v2.config(process.env.CLOUDINARY_URL);
 
-export const { uploader } = cloudinary.v2;
+export default cloudinary.v2.uploader;

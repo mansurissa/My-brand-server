@@ -1,9 +1,9 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const commentsSchema = mongoose.Schema({
-  name: { type: String, default: "Anonymous" },
+  name: { type: String, default: 'Anonymous' },
   email: { type: String },
   message: { type: String, required: true },
   time: { type: Date },
 });
-export default mongoose.model("Comment", commentsSchema);
+export default mongoose.model('Comment', commentsSchema);

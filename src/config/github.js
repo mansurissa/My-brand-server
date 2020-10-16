@@ -1,27 +1,27 @@
-import passport from "passport-github2";
-import User from "../models/usersModel.js";
+import passport from 'passport-github2';
+import User from '../models/usersModel.js';
 
 const GoogleStrategy = passport.Strategy;
 
-export const googleStrategy = new GoogleStrategy(
+export default new GoogleStrategy(
   {
-    clientID: "c3a3186b68a075318c1f",
-    clientSecret: "836bb1f17414b144ec51eb5d47036c6abf2795f1",
-    callbackURL: "http://localhost:5001/users/auth/github/callback",
+    clientID: 'c3a3186b68a075318c1f',
+    clientSecret: '836bb1f17414b144ec51eb5d47036c6abf2795f1',
+    callbackURL: 'http://localhost:5001/users/auth/github/callback',
   },
   async (accessToken, refreshToken, profile, done) => {
     const { provider } = profile;
     const genUser = {
       name: profile._json.name,
       provider,
-      password: "TesterTester",
+      password: 'TesterTester',
     };
     try {
       let user = await User.findOne(genUser);
       if (!user) {
-        if (!profile._json.email)
+        if (!profile._json.email) {
           genUser.email = `${profile.id}@${provider}.com`;
-        else genUser.email = profile._json.email;
+        } else genUser.email = profile._json.email;
         user = await User.create(genUser);
       }
 
@@ -29,5 +29,5 @@ export const googleStrategy = new GoogleStrategy(
     } catch (error) {
       return done(error);
     }
-  }
+  },
 );

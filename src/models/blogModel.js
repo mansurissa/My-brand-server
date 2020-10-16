@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const postSchema = mongoose.Schema({
   title: { type: String, required: true, unique: true },
@@ -9,8 +9,8 @@ const postSchema = mongoose.Schema({
   likes: { type: Number },
   commentsCount: { type: Number },
   views: { type: Number },
-  comments: [{ type: mongoose.Types.ObjectId, ref: "Comment" }],
-  author: { type: mongoose.Types.ObjectId, ref: "User", required: true },
+  comments: [{ type: mongoose.Types.ObjectId, ref: 'Comment' }],
+  author: { type: mongoose.Types.ObjectId, ref: 'User', required: true },
 });
 
-export default mongoose.model("Post", postSchema);
+export default mongoose.model('Post', postSchema);

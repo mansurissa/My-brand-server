@@ -9,8 +9,6 @@
     "cloudinary": "^1.23.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "eslint-config-prettier": "^6.12.0",
-    "eslint-plugin-prettier": "^3.1.4",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.0",
     "helmet": "^4.1.1",
@@ -25,7 +23,7 @@
     "passport-jwt": "^4.0.0"
   },
   "devDependencies": {
-    "eslint": "^7.10.0",
+    "eslint": "^7.11.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.1"
   },
