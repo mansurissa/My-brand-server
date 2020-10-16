@@ -1,9 +1,10 @@
-import { Strategy as JwtStrategy, ExtractJwt  } from 'passport-jwt';
-
+import passport from "passport-jwt";
 
 const opts = {
-    wtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey = process.env.JWT_KEY
-}
+  jwtFromRequest: passport.ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: process.env.JWT_KEY,
+};
 
-export default  new JwtStrategy(opts, (jwt_payload, done)=>  done(null, jwt_payload));
+export const jwtStrategy = new passport.Strategy(opts, (jwt_payload, done) =>
+  done(null, jwt_payload)
+);
