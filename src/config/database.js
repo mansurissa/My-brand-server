@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import dotenv from "dotenv";
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -11,7 +11,7 @@ const connectDb = () => {
       useUnifiedTopology: true,
       useNewUrlParser: true,
     })
-    .then(console.log("connected to database"));
+    .then(console.log('connected to database'));
 };
 
 export default connectDb;

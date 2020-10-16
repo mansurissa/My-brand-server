@@ -1,10 +1,12 @@
-import passport from "passport-jwt";
+/* eslint-disable function-paren-newline */
+import passport from 'passport-jwt';
 
 const opts = {
   jwtFromRequest: passport.ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: process.env.JWT_KEY,
 };
 
-export const jwtStrategy = new passport.Strategy(opts, (jwt_payload, done) =>
-  done(null, jwt_payload)
+export default new passport.Strategy(opts, (jwtPayload, done) =>
+  // eslint-disable-next-line implicit-arrow-linebreak
+  done(null, jwtPayload),
 );
