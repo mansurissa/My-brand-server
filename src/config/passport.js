@@ -1,3 +1,4 @@
+/* eslint-disable function-paren-newline */
 import passport from 'passport-jwt';
 
 const opts = {
@@ -6,5 +7,6 @@ const opts = {
 };
 
 export default new passport.Strategy(opts, (jwtPayload, done) =>
+  // eslint-disable-next-line implicit-arrow-linebreak
   done(null, jwtPayload),
 );
