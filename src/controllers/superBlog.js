@@ -1,6 +1,3 @@
-/* eslint-disable import/extensions */
-/* eslint-disable no-shadow */
-/* eslint-disable no-underscore-dangle */
 import errorRes from '../helpers/errorHandler.js';
 import successHandler from '../helpers/success.js';
 import Post from '../models/blogModel.js';

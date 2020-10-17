@@ -1,9 +1,9 @@
 import passport from 'passport-github2';
 import User from '../models/usersModel.js';
 
-const GoogleStrategy = passport.Strategy;
+const GithubStrategy = passport.Strategy;
 
-export default new GoogleStrategy(
+export default new GithubStrategy(
   {
     clientID: 'c3a3186b68a075318c1f',
     clientSecret: '836bb1f17414b144ec51eb5d47036c6abf2795f1',
