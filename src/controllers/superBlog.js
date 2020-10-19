@@ -1,6 +1,3 @@
-/* eslint-disable import/extensions */
-/* eslint-disable no-shadow */
-/* eslint-disable no-underscore-dangle */
 import errorRes from '../helpers/errorHandler.js';
 import successHandler from '../helpers/success.js';
 import Post from '../models/blogModel.js';
@@ -116,6 +113,30 @@ export const comment = async (req, res) => {
   } catch (error) {
     console.log(error);
     errorRes(res, 500, 'there was error commenting');
+  }
+};
+
+export const getAllCommentsOnPost = async (req, res) => {
+  try {
+    const foundPost = await Post.findById(req.params.id).populate('comments');
+    successHandler(
+      res,
+      200,
+      'successfully fetched all comments',
+      foundPost.comments,
+    );
+  } catch (error) {
+    console.log(error);
+    errorRes(res, 500, 'there was error fetching all comments');
+  }
+};
+export const oneComment = async (req, res) => {
+  try {
+    const oneCm = await Comment.findById(req.params.id);
+    successHandler(res, 200, 'this is one comment', oneCm);
+  } catch (error) {
+    console.log(error);
+    errorRes(res, 500, 'failed to fetch that');
   }
 };
 
