@@ -10,8 +10,11 @@ export const create = async (req, res) => {
   const tmp = req.files.image.tempFilePath;
 
   try {
-    if (!title || !body) {
-      errorRes(res, 500, ' some fileds are not filled correctly');
+    if (!title || title.length < 3) {
+      errorRes(res, 500, ' please fill title correctly');
+    }
+    if (!body || body.length < 10) {
+      errorRes(res, 500, ' please fill body correctly');
     }
     const result = await uploader.upload(tmp, (_, result) => result);
 
@@ -24,12 +27,12 @@ export const create = async (req, res) => {
       commentsCount: 0,
       views: 0,
       time: Date.now(),
-      author: req.user.id,
+      // author: req.user.id,
     });
     successHandler(res, 201, 'new post created successfully', post);
   } catch (error) {
     console.log(error);
-    errorRes(res, 500, 'Failed to create a post');
+    errorRes(res, 500, 'Failed to create a post', error);
   }
 };
 
@@ -41,7 +44,7 @@ export const getAllPosts = async (req, res) => {
       posts,
     });
   } catch (error) {
-    errorRes(res, 500, 'there was error getting all posts');
+    errorRes(res, 500, 'there was error getting all posts', error);
   }
 };
 
@@ -53,7 +56,7 @@ export const getOnePost = async (req, res) => {
     return successHandler(res, 200, 'post got successfully', onePost);
   } catch (error) {
     console.log(error);
-    return errorRes(res, 404, 'not found on posts list');
+    return errorRes(res, 404, 'not found on posts list', error);
   }
 };
 
@@ -97,7 +100,7 @@ export const updatePost = async (req, res) => {
 export const comment = async (req, res) => {
   const { name, email, message } = req.body;
   try {
-    if (!email || !message) errorRes(res, 500, 'Some filed are not field');
+    if (!message) errorRes(res, 500, 'Some filed are not field');
     const comment = await Comment.create({
       name,
       email,

@@ -5,12 +5,12 @@ const postSchema = mongoose.Schema({
   imageUrl: { type: String },
   imageId: { type: String },
   body: { type: String, required: true },
-  time: { type: String },
-  likes: { type: Number },
-  commentsCount: { type: Number },
-  views: { type: Number },
+  time: { type: Date },
+  likes: { type: Number, default: 0 },
+  commentsCount: { type: Number, default: 0 },
+  views: { type: Number, default: 0 },
   comments: [{ type: mongoose.Types.ObjectId, ref: 'Comment' }],
-  author: { type: mongoose.Types.ObjectId, ref: 'User', required: true },
+  // author: { type: mongoose.Types.ObjectId, ref: 'User', required: true },
 });
 
 export default mongoose.model('Post', postSchema);

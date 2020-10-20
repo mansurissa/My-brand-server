@@ -12,10 +12,10 @@ import {
   subscribe,
   updatePost,
 } from '../controllers/superBlog.js';
-import { auth } from '../middleware/auth.js';
+// import { auth } from '../middleware/authx.js';
 
 const blogRouter = express.Router();
-blogRouter.route('/').post(auth, create).get(getAllPosts);
+blogRouter.route('/').post(create).get(getAllPosts);
 blogRouter.route('/subscribe').post(subscribe).get(getAllSubscribers);
 blogRouter
   .route('/:id')

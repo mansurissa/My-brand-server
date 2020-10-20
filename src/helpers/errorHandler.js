@@ -1,8 +1,8 @@
-const errorRes = (res, status, message) => {
+const errorRes = (res, status, message, error) => {
   res.status(status).json({
     success: false,
     message,
-    data: {},
+    error,
   });
 };
 
