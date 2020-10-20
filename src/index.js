@@ -11,22 +11,25 @@ import usersRouter from './routes/usersRouter.js';
 import connectDb from './config/database.js';
 import errorRes from './helpers/errorHandler.js';
 import jwtStrategy from './config/passport.js';
-import googleStrategy from './config/github.js';
-// import swaggerDoc from '../documentation/swaggerDoc.json';
+
+import githubStrategy from './config/github.js';
+import swaggerDoc from '../documentation/swaggerDoc.json';
+
 
 const app = express();
 connectDb();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(upload({ useTempFiles: true }));
-app.use(cors());
 app.use(helmet());
 app.use(morgan('dev'));
 app.use(passport.initialize());
 passport.use(jwtStrategy);
-passport.use(googleStrategy);
-// app.use('/', swagger.serve, swagger.setup(swaggerDoc));
+passport.use(githubStrategy);
+app.use('/', swagger.serve, swagger.setup(swaggerDoc));
+
 app.use('/blog', blogRouter);
 app.use('/users', usersRouter);
 app.use((req, res) => {
