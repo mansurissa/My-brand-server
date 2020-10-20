@@ -13,8 +13,7 @@ import errorRes from './helpers/errorHandler.js';
 import jwtStrategy from './config/passport.js';
 
 import githubStrategy from './config/github.js';
-import swaggerDoc from '../documentation/swaggerDoc.json';
-
+// import swaggerDoc from '../documentation/swaggerDoc.json';
 
 const app = express();
 connectDb();
@@ -28,7 +27,7 @@ app.use(morgan('dev'));
 app.use(passport.initialize());
 passport.use(jwtStrategy);
 passport.use(githubStrategy);
-app.use('/', swagger.serve, swagger.setup(swaggerDoc));
+// app.use('/', swagger.serve, swagger.setup(swaggerDoc));
 
 app.use('/blog', blogRouter);
 app.use('/users', usersRouter);
