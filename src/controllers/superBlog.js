@@ -10,8 +10,11 @@ export const create = async (req, res) => {
   const tmp = req.files.image.tempFilePath;
 
   try {
-    if (!title || !body) {
-      errorRes(res, 500, ' some fileds are not filled correctly');
+    if (!title || title.length < 3) {
+      errorRes(res, 500, ' please fill title correctly');
+    }
+    if (!body || body.length < 10) {
+      errorRes(res, 500, ' please fill body correctly');
     }
     const result = await uploader.upload(tmp, (_, result) => result);
 
