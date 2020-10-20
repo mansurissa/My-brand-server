@@ -5,8 +5,10 @@ import {
   deletePost,
   getAllPosts,
   getAllSubscribers,
+  getAllCommentsOnPost,
   getOnePost,
   like,
+  oneComment,
   subscribe,
   updatePost,
 } from '../controllers/superBlog.js';
@@ -22,5 +24,7 @@ blogRouter
   .patch(updatePost)
   .put(like);
 blogRouter.route('/:id/comment').post(comment);
+blogRouter.route('/:id/allComments').get(getAllCommentsOnPost);
+blogRouter.route('/comments/:id').get(oneComment);
 
 export default blogRouter;
