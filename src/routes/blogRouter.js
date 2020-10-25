@@ -1,7 +1,6 @@
 import express from 'express';
 import {
   comment,
-  create,
   deletePost,
   getAllPosts,
   getAllSubscribers,
@@ -11,20 +10,21 @@ import {
   oneComment,
   subscribe,
   updatePost,
+  createPost,
 } from '../controllers/superBlog.js';
 // import { auth } from '../middleware/authx.js';
 
-const blogRouter = express.Router();
-blogRouter.route('/').post(create).get(getAllPosts);
-blogRouter.route('/subscribe').post(subscribe).get(getAllSubscribers);
-blogRouter
+const router = express.Router();
+router.route('/').post(createPost).get(getAllPosts);
+router.route('/subscribe').post(subscribe).get(getAllSubscribers);
+router
   .route('/:id')
   .delete(deletePost)
   .get(getOnePost)
   .patch(updatePost)
   .put(like);
-blogRouter.route('/:id/comment').post(comment);
-blogRouter.route('/:id/allComments').get(getAllCommentsOnPost);
-blogRouter.route('/comments/:id').get(oneComment);
+router.route('/:id/comment').post(comment);
+router.route('/:id/allComments').get(getAllCommentsOnPost);
+router.route('/comments/:id').get(oneComment);
 
-export default blogRouter;
+export default router;

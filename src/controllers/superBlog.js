@@ -5,7 +5,7 @@ import uploader from '../config/cloudinary.js';
 import Comment from '../models/comments.js';
 import Subscriber from '../models/subscribers.js';
 
-export const create = async (req, res) => {
+export const createPost = async (req, res) => {
   const { title, body } = req.body;
   const tmp = req.files.image.tempFilePath;
 
@@ -38,7 +38,7 @@ export const create = async (req, res) => {
 
 export const getAllPosts = async (req, res) => {
   try {
-    const posts = await Post.find();
+    const posts = await Post.find().sort({ time: -1 });
     successHandler(res, 200, 'successfully read all posts', {
       postsCount: posts.length,
       posts,
