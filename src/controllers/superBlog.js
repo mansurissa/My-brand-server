@@ -7,7 +7,6 @@ import Subscriber from '../models/subscribers.js';
 
 export const createPost = async (req, res) => {
   const { title, body } = req.body;
-  const tmp = req.files.image.tempFilePath;
 
   try {
     if (!title || title.length < 3) {
@@ -16,19 +15,27 @@ export const createPost = async (req, res) => {
     if (!body || body.length < 10) {
       errorRes(res, 500, ' please fill body correctly');
     }
-    const result = await uploader.upload(tmp, (_, result) => result);
 
     const post = await Post.create({
       title,
       body,
-      imageUrl: result.url,
-      imageId: result.public_id,
+      imageUrl: '',
+      imageId: '',
       likes: 0,
       commentsCount: 0,
       views: 0,
       time: Date.now(),
       // author: req.user.id,
     });
+    if (req.files) {
+      const tmp = req.files.image.tempFilePath;
+      const result = await uploader.upload(tmp, (_, result) => result);
+
+      post.imageUrl = result.url;
+      post.imageId = result.public_id;
+
+      return post.save();
+    }
     successHandler(res, 201, 'new post created successfully', post);
   } catch (error) {
     console.log(error);
@@ -76,24 +83,29 @@ export const deletePost = async (req, res) => {
 
 export const updatePost = async (req, res) => {
   try {
-    const tmp = req.files.image.tempFilePath;
-
     const foundPost = await Post.findOne({ _id: req.params.id });
     if (!foundPost) {
       return errorRes(res, 404, " Can't find that post on list");
     }
-    if (req.files) await uploader.destroy(foundPost.imageId);
-    const result = await uploader.upload(tmp, (_, result) => result);
+    if (req.files) {
+      const tmp = req.files.image.tempFilePath;
+      const result = await uploader.upload(tmp, (_, result) => result);
+      await uploader.destroy(foundPost.imageId);
+      const updatePostImage = await foundPost.updateOne({
+        imageUrl: result.url,
+        imageId: result.public_id,
+      });
+      return console.log('image updated successfully', updatePostImage);
+    }
+
     const updatedPost = await foundPost.updateOne({
       ...req.body,
-      imageId: result.public_id,
-      imageUrl: result.url,
     });
 
     return successHandler(res, 201, 'Updated post successfully', updatedPost);
   } catch (error) {
     console.log(error);
-    return errorRes(res, 500, 'There was a problem updating post');
+    return errorRes(res, 500, 'There was a problem updating post', error);
   }
 };
 
