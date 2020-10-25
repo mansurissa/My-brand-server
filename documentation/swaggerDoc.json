@@ -1,1 +1,424 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a documentation for my personal wbsite's api. a user can view posts,like, and subscribe on my newsletler. admin can create, edit and delete apost after loging in. I'm proud of this",
+    "version": "1.0.0",
+    "title": "MY-BRAND's API",
+    "contact": {
+      "email": "mansurissa6@gmail.com",
+      "name": "NSABIMANA Issa"
+    }
+  },
+  "basePath": "/",
+  "tags": {
+    "name": "Blog",
+    "description": "For sharing my knowledge through writting posts and sharing them"
+  },
+  "schemes": ["http", "https"],
+  "paths": {
+    "/blogs": {
+      "post": {
+        "tags": ["Post"],
+        "summary": "Create new post < Only admins can do this> ",
+        "description": " This is for creating a post, you can also send image",
+        "consumes": ["multipart/form-data"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "title",
+            "in": "formData",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "formData",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "imageUrl",
+            "in": "formData",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created  post successfully",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          },
+          "500": {
+            "description": "There was error fetching all posts | Post not created"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Post"],
+        "summary": "Fetch all posts",
+        "description": "This is used to read all blog posts ",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successfully fetched all posts",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Post"
+              }
+            }
+          },
+          "500": {
+            "description": "There was error while fetching posts"
+          },
+          "404": {
+            "description": "Posts not found"
+          }
+        }
+      }
+    },
+    "/blogs/{postId}": {
+      "get": {
+        "tags": ["Post"],
+        "summary": "Find one Post",
+        "description": " This is for fetching one post by ID",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "description": "Id must be supplied in path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful fetched one post",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          },
+          "404": {
+            "description": "Post not found"
+          },
+          "500": {
+            "description": "There was error fetching a post"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Post"],
+        "summary": "Delete a post < Only admins can delete a post > ",
+        "description": "This is used to delete a post ",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted post Successfully"
+          },
+          "500": {
+            "description": "There was error while deleting a post"
+          },
+          "404": {
+            "description": "Post not found"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Post"],
+        "summary": "Update posts's title, image or body <only admins can do this>",
+        "description": "This endpoint is used to update ppost's data",
+        "consumes": ["multipart/form-data"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "title",
+            "in": "formData",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "formData",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "image",
+            "in": "formData",
+            "required": false,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Post updated successfully"
+          },
+          "400": {
+            "description": "Some fields are not filled"
+          },
+          "500": {
+            "description": "Error while updating post"
+          },
 
+          "404": {
+            "description": "Post not found not found"
+          }
+        }
+      }
+    },
+
+    "/blogs/{postId}/like": {
+      "put": {
+        "tags": ["Post"],
+        "summary": "Like a post",
+        "description": "Like a post",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": " Successfully liked a post "
+          },
+          "500": {
+            "description": "Ther was an error while liking apost"
+          },
+          "404": {
+            "description": "Post not found"
+          }
+        }
+      }
+    },
+    "/blogs/{postId}/comment": {
+      "post": {
+        "tags": ["Post"],
+        "summary": "Comment on a post",
+        "description": "For sending a comment",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "message",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Comment"
+            }
+          },
+          {
+            "name": "name",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Comment"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": " commented successfully"
+          },
+          "400": {
+            "description": "some filds are not filled"
+          },
+          "500": {
+            "description": "There was error while commenting"
+          },
+          "404": {
+            "description": "Post not found!"
+          }
+        }
+      }
+    },
+    "{postId}/allComments": {
+      "get": {
+        "tags": ["Post"],
+        "summary": "Getting all Subscribers",
+        "description": "This is for getting all comment ",
+        "consumes": [""],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched all comments"
+          },
+          "400": {
+            "description": "Route not found "
+          },
+          "500": {
+            "description": "There was an error while getting all comments"
+          }
+        }
+      }
+    },
+    "/comments/commentId": {
+      "get": {
+        "tags": ["Post"],
+        "summary": "Getting single comment",
+        "description": "This is for getting comment with ID",
+        "consumes": [""],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched one comment"
+          },
+          "400": {
+            "description": "Route not found "
+          },
+          "500": {
+            "description": "There was an error while getting comment"
+          }
+        }
+      }
+    },
+    "/blogs/subscribe": {
+      "post": {
+        "tags": ["Post"],
+        "summary": "Subscribing to my newsletler",
+        "description": "This end point is for handling subcribe request",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Subscriber"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully subscribed to our mail list"
+          },
+          "400": {
+            "description": "Email is not valid or empty field"
+          },
+          "500": {
+            "description": "There was an error subscribing"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Post"],
+        "summary": "Getting all Subscribers",
+        "description": "This is for getting all emails on mail list",
+        "consumes": [""],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched all subscribers"
+          },
+          "400": {
+            "description": "Route not found "
+          },
+          "500": {
+            "description": "There was an error while getting all subscribers"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Post": {
+      "type": "object",
+      "required": ["title", "body", "image"],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "imageUrl": {
+          "type": "string"
+        },
+
+        "likes": {
+          "type": "Integer",
+          "minimum": 0
+        },
+        "commentsCount": {
+          "type": "Interger",
+          "minimum": 0
+        },
+        "views": {
+          "type": "Interger",
+          "minimum": 0
+        },
+        "comments": {
+          "type": "array",
+          "xml": {
+            "wrapped": true
+          },
+          "items": {
+            "type": "string",
+            "xml": {
+              "name": "comment"
+            }
+          }
+        }
+      },
+
+      "xml": {
+        "name": "Blog"
+      }
+    },
+    "Subscribe": {
+      "type": "object",
+      "required": ["email"],
+      "properties": {
+        "email": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "Subscribe"
+      }
+    },
+    "Comment": {
+      "type": "object",
+      "required": ["body"],
+      "properties": {
+        "body": {
+          "type": "string"
+        },
+        "author": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "Comment"
+      }
+    }
+  }
+}

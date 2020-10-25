@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import errorRes from '../helpers/errorHandler.js';
@@ -53,7 +54,7 @@ export const login = async (req, res) => {
             process.env.JWT_KEY,
             {
               expiresIn: '1h',
-            }
+            },
           );
           return successHandler(res, 200, 'succesfull loged in', {
             user: foundUser,
