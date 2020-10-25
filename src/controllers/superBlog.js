@@ -10,10 +10,10 @@ export const createPost = async (req, res) => {
 
   try {
     if (!title || title.length < 3) {
-      errorRes(res, 500, ' please fill title correctly');
+      return errorRes(res, 500, ' please fill title correctly');
     }
     if (!body || body.length < 10) {
-      errorRes(res, 500, ' please fill body correctly');
+      return errorRes(res, 500, ' please fill body correctly');
     }
 
     const post = await Post.create({
@@ -34,12 +34,12 @@ export const createPost = async (req, res) => {
       post.imageUrl = result.url;
       post.imageId = result.public_id;
 
-      return post.save();
+      post.save();
     }
     successHandler(res, 201, 'new post created successfully', post);
   } catch (error) {
     console.log(error);
-    errorRes(res, 500, 'Failed to create a post', error);
+    return errorRes(res, 500, 'Failed to create a post', error);
   }
 };
 
@@ -77,7 +77,7 @@ export const deletePost = async (req, res) => {
     if (foundPost.imageId) await uploader.destroy(foundPost.imageId);
     return successHandler(res, 200, 'Deleted post successfully');
   } catch (error) {
-    return errorRes(res, 500, 'There was error deleting post');
+    return errorRes(res, 500, 'There was error deleting post', error);
   }
 };
 
@@ -87,6 +87,9 @@ export const updatePost = async (req, res) => {
     if (!foundPost) {
       return errorRes(res, 404, " Can't find that post on list");
     }
+    const updatedPost = await foundPost.updateOne({
+      ...req.body,
+    });
     if (req.files) {
       const tmp = req.files.image.tempFilePath;
       const result = await uploader.upload(tmp, (_, result) => result);
@@ -97,11 +100,6 @@ export const updatePost = async (req, res) => {
       });
       return console.log('image updated successfully', updatePostImage);
     }
-
-    const updatedPost = await foundPost.updateOne({
-      ...req.body,
-    });
-
     return successHandler(res, 201, 'Updated post successfully', updatedPost);
   } catch (error) {
     console.log(error);

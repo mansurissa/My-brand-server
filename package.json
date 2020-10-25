@@ -35,7 +35,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node --experimental-json-modules src",
-    "dev": "nodemon src"
+    "dev": "nodemon --experimental-json-modules src"
   },
   "author": "Issa Nsabimana",
   "license": "ISC"

@@ -37,9 +37,8 @@
             "type": "string"
           },
           {
-            "name": "imageUrl",
+            "name": "image",
             "in": "formData",
-            "required": true,
             "type": "file"
           }
         ],
@@ -182,10 +181,7 @@
             "description": "Post not found not found"
           }
         }
-      }
-    },
-
-    "/blogs/{postId}/like": {
+      },
       "put": {
         "tags": ["Post"],
         "summary": "Like a post",
@@ -212,6 +208,7 @@
         }
       }
     },
+
     "/blogs/{postId}/comment": {
       "post": {
         "tags": ["Post"],
@@ -232,12 +229,12 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/Comment"
-            }
+            },
+            "type": "string"
           },
           {
             "name": "name",
             "in": "body",
-            "required": true,
             "schema": {
               "$ref": "#/definitions/Comment"
             }
@@ -264,8 +261,16 @@
         "tags": ["Post"],
         "summary": "Getting all Subscribers",
         "description": "This is for getting all comment ",
-        "consumes": [""],
+        "consumes": ["application/json"],
         "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successfully fetched all comments"
@@ -279,13 +284,21 @@
         }
       }
     },
-    "/comments/commentId": {
+    "/blogs/comments/commentId": {
       "get": {
         "tags": ["Post"],
         "summary": "Getting single comment",
         "description": "This is for getting comment with ID",
         "consumes": [""],
         "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "type": ""
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successfully fetched one comment"
@@ -351,7 +364,7 @@
   "definitions": {
     "Post": {
       "type": "object",
-      "required": ["title", "body", "image"],
+      "required": ["title", "body"],
       "properties": {
         "title": {
           "type": "string"
@@ -407,12 +420,12 @@
     },
     "Comment": {
       "type": "object",
-      "required": ["body"],
+      "required": ["message"],
       "properties": {
-        "body": {
+        "message": {
           "type": "string"
         },
-        "author": {
+        "name": {
           "type": "string"
         }
       },
