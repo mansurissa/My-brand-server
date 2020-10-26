@@ -83,22 +83,20 @@ export const deletePost = async (req, res) => {
 
 export const updatePost = async (req, res) => {
   try {
-    const foundPost = await Post.findOne({ _id: req.params.id });
-    if (!foundPost) {
-      return errorRes(res, 404, " Can't find that post on list");
-    }
-    const updatedPost = await foundPost.updateOne({
-      ...req.body,
-    });
+    let result;
     if (req.files) {
       const tmp = req.files.image.tempFilePath;
-      const result = await uploader.upload(tmp, (_, result) => result);
-      await uploader.destroy(foundPost.imageId);
-      const updatePostImage = await foundPost.updateOne({
-        imageUrl: result.url,
-        imageId: result.public_id,
-      });
-      return console.log('image updated successfully', updatePostImage);
+      result = await uploader.upload(tmp, (_, result) => result);
+      req.body.imageUrl = result.url;
+      req.body.imageId = result.public_id;
+    }
+    const updatedPost = await Post.findOneAndUpdate(
+      { _id: req.params.id },
+      req.body,
+      { new: true },
+    );
+    if (!updatedPost) {
+      return errorRes(res, 404, " Can't find that post on list");
     }
     return successHandler(res, 201, 'Updated post successfully', updatedPost);
   } catch (error) {
