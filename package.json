@@ -33,7 +33,7 @@
     "eslint-plugin-import": "^2.22.1"
   },
   "scripts": {
-    "test": " mocha ./src/tests/blog.test.js",
+    "test": " NODE_ENV=test mocha --timeout 20000  ./src/tests/**.test.js --exit",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "coverage": "nyc npm test",
     "start": "node --experimental-json-modules src",

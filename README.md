@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/mansurissa/My-brand-server/badge.svg?branch=develop)](https://coveralls.io/github/mansurissa/My-brand-server?branch=develop)
+
 # My-brand-server
 
 > This Repo is for my personal website and blog's API

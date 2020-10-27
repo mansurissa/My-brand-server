@@ -1,0 +1,17 @@
+language: node_js
+
+node_js:
+  - 'stable'
+
+env:
+  - PORT=5003
+
+services:
+  - mongodb
+
+script:
+  - npm ci
+  - npm test
+  - npm run coverage
+after_success:
+  - npm run coveralls
