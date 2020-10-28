@@ -19,14 +19,19 @@ export const register = async (req, res) => {
   };
 
   try {
+    if (!name || !email || !password) {
+      errorRes(res, 500, 'Some field are not field');
+    }
     if (!passwordValidation || !emailValidation || name.length < 1) {
       return errorRes(res, 500, 'Check your fields and try again');
     }
+
     await bcrypt.hash(password, 10, async (err, hash) => {
       if (err) {
         console.log('This is the error you are seearching for:', err);
         throw new Error();
       }
+
       const user = await User.create({
         name,
         email,

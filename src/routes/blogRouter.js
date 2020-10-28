@@ -19,6 +19,7 @@ router.route('/').post(createPost).get(getAllPosts);
 router.route('/subscribe').post(subscribe).get(getAllSubscribers);
 router
   .route('/:id')
+
   .delete(deletePost)
   .get(getOnePost)
   .patch(updatePost)

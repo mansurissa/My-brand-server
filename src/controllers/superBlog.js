@@ -7,6 +7,11 @@ import Subscriber from '../models/subscribers.js';
 
 export const createPost = async (req, res) => {
   const { title, body } = req.body;
+  await Post.findOne({ title: `${title}` }, (err, result) => {
+    if (result) {
+      errorRes(res, 500, 'The title alresdy exist');
+    }
+  });
 
   try {
     if (!title || title.length < 3) {
@@ -33,7 +38,6 @@ export const createPost = async (req, res) => {
 
       post.imageUrl = result.url;
       post.imageId = result.public_id;
-
       post.save();
     }
     successHandler(res, 201, 'new post created successfully', post);
