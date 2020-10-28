@@ -12,6 +12,6 @@ services:
 script:
   - npm ci
   - npm test
-  - npm run coverage
+  - npm run cover
 after_success:
   - npm run coveralls
