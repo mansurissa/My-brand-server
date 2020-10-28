@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/mansurissa/My-brand-server.svg?branch=develop)](https://travis-ci.org/mansurissa/My-brand-server)
+
 [![Coverage Status](https://coveralls.io/repos/github/mansurissa/My-brand-server/badge.svg?branch=develop)](https://coveralls.io/github/mansurissa/My-brand-server?branch=develop)
 
 # My-brand-server
