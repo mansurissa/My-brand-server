@@ -1,7 +1,5 @@
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-
-dotenv.config();
+import 'dotenv/config.js';
 
 const { MONGO_URL, MONGO_URL_TEST, NODE_ENV } = process.env;
 const connectDb = () => {

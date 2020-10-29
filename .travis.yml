@@ -11,7 +11,9 @@ services:
 
 script:
   - npm ci
-  - npm test
+  - npm test:coveralls
   - npm run cover
+ notifications:
+   email: false
 after_success:
   - npm run coveralls

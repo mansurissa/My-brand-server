@@ -7,10 +7,10 @@
   "dependencies": {
     "bcrypt": "^5.0.0",
     "chai": "^4.2.0",
-    "chai-http": "^4.3.0",
     "cloudinary": "^1.23.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
+    "esm": "^3.2.25",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.0",
     "helmet": "^4.1.1",
@@ -35,10 +35,13 @@
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.1"
   },
+  "esm": {
+    "cjs": true
+  },
   "scripts": {
-    "test": " NODE_ENV=test nyc --reporter=html mocha --timeout 20000  ./src/tests/**.test.js --exit || true ",
+    "test": " NODE_ENV=test nyc --reporter=html mocha --timeout 20000  ./src/tests/**.test.js --exit  || true ",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
-    "cover": "nyc npm test",
+    "cover": "nyc _mocha --require esm ./src/tests/**.test.js",
     "start": "node --experimental-json-modules src",
     "dev": "nodemon --experimental-json-modules src"
   },
