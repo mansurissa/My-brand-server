@@ -133,7 +133,9 @@ export const comment = async (req, res) => {
 
 export const getAllCommentsOnPost = async (req, res) => {
   try {
-    const foundPost = await Post.findById(req.params.id).populate('comments');
+    const foundPost = await Post.findById(req.params.id)
+      .populate('comments')
+      .sort({ time: -1 });
     successHandler(
       res,
       200,

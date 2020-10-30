@@ -10,7 +10,6 @@
     "cloudinary": "^1.23.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "esm": "^3.2.25",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.0",
     "helmet": "^4.1.1",
@@ -35,15 +34,12 @@
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.1"
   },
-  "esm": {
-    "cjs": true
-  },
   "scripts": {
-    "test": " NODE_ENV=test nyc --reporter=html mocha --timeout 20000  ./src/tests/**.test.js --exit  || true ",
-    "coveralls": "nyc report --reporter=text-lcov | coveralls",
-    "cover": "nyc _mocha --require esm ./src/tests/**.test.js",
+    "test": "NODE_ENV=test mocha --timeout 20000 ./src/tests/**.test.js  --exit",
+    "coveralls": "report --reporter=lcov --reporter=text-summary  | coveralls",
+    "cover": "nyc npm run test",
     "start": "node --experimental-json-modules src",
-    "dev": "nodemon --experimental-json-modules src"
+    "dev": "nodemon --experimental-modules src"
   },
   "author": "Issa Nsabimana",
   "license": "ISC"
