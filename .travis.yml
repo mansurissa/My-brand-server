@@ -4,7 +4,7 @@ node_js:
   - 'stable'
 
 env:
-  - PORT=5003
+  - PORT=5001
 
 services:
   - mongodb
@@ -16,6 +16,6 @@ script:
 
  notifications:
    email: false
-   
+
 after_success:
   - npm run coveralls
