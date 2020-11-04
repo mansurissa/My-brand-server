@@ -12,7 +12,7 @@ services:
 script:
   - npm ci
   - npm test
-  - npm run cover
+  - npm run coverage
 
  notifications:
    email: false
