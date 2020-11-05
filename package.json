@@ -42,7 +42,7 @@
     "test": "NODE_ENV=test mocha  --timeout 20000 ./src/tests/**.test.js --require @babel/register --exit",
     "coveralls": "nyc report --reporter=lcov --reporter=text-summary | coveralls",
     "coverage": "nyc npm run test",
-    "start": "node  src",
+    "start": "babel-node src",
     "dev": "nodemon --exec babel-node src"
   },
   "author": "Issa Nsabimana",

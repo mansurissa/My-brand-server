@@ -189,12 +189,21 @@ describe('Comments related tests:', async () => {
     await post.save();
     const res = await request(app).get(`/blogs/${post._id}/allComments`);
     expect(res.status).to.be.equal(200);
+    expect(res.body).to.have.property('success', true);
+    expect(res.body).to.have.property(
+      'message',
+      'successfully fetched all comments',
+    );
+    expect(res.body).to.be.a('object');
   });
 
   it('Should get one comments ', async () => {
     const comment = await Comment.create(mockComment);
     const res = await request(app).get(`/blogs/comments/${comment._id}`);
     expect(res.status).to.be.equal(200);
+    expect(res.body).to.have.property('success', true);
+    expect(res.body).to.have.property('message', 'this is one comment');
+    expect(res.body).to.be.a('object');
   });
 
   await Comment.deleteMany({});

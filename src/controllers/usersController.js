@@ -28,7 +28,6 @@ export const register = async (req, res) => {
 
     await bcrypt.hash(password, 10, async (err, hash) => {
       if (err) {
-        console.log('This is the error you are seearching for:', err);
         throw new Error();
       }
 
@@ -92,7 +91,6 @@ export const getOneUSer = async (req, res) => {
     if (!foundUser) return errorRes(res, 404, 'User not found');
     return successHandler(res, 200, 'Successfully got one user', foundUser);
   } catch (error) {
-    console.log(error);
     return errorRes(res, 500, 'there was problem getting user ');
   }
 };

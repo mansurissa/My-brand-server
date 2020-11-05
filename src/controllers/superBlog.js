@@ -42,7 +42,6 @@ export const createPost = async (req, res) => {
     }
     successHandler(res, 201, 'new post created successfully', post);
   } catch (error) {
-    console.log(error);
     return errorRes(res, 500, 'Failed to create a post', error);
   }
 };
@@ -66,7 +65,6 @@ export const getOnePost = async (req, res) => {
     await onePost.save();
     return successHandler(res, 200, 'post got successfully', onePost);
   } catch (error) {
-    console.log(error);
     return errorRes(res, 404, 'not found on posts list', error);
   }
 };
@@ -126,7 +124,6 @@ export const comment = async (req, res) => {
 
     successHandler(res, 201, 'successfully commented', comment);
   } catch (error) {
-    console.log(error);
     errorRes(res, 500, 'there was error commenting');
   }
 };
@@ -143,7 +140,6 @@ export const getAllCommentsOnPost = async (req, res) => {
       foundPost.comments,
     );
   } catch (error) {
-    console.log(error);
     errorRes(res, 500, 'there was error fetching all comments');
   }
 };
@@ -189,7 +185,6 @@ export const getAllSubscribers = async (req, res) => {
       subscribers: allSubs,
     });
   } catch (error) {
-    console.log(error);
     errorRes(res, 500, 'Failed while fetching all subscribers');
   }
 };
