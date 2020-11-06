@@ -70,15 +70,15 @@ export const getOnePost = async (req, res) => {
 };
 
 export const deletePost = async (req, res) => {
-  const id = req.params._id;
   try {
-    const foundPost = await Post.findOne(id);
+    const foundPost = await Post.findById(req.params.id);
     if (!foundPost) return errorRes(res, 404, 'cant find that post');
 
-    await foundPost.deleteOne();
     if (foundPost.imageId) await uploader.destroy(foundPost.imageId);
+    await Post.deleteOne({ _id: foundPost._id });
     return successHandler(res, 200, 'Deleted post successfully');
   } catch (error) {
+    console.log(error);
     return errorRes(res, 500, 'There was error deleting post', error);
   }
 };
