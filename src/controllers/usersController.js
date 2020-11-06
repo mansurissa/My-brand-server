@@ -1,6 +1,7 @@
 /* eslint-disable consistent-return */
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+// import passport from 'passport';
 import errorRes from '../helpers/errorHandler.js';
 import successHandler from '../helpers/success.js';
 import User from '../models/usersModel.js';
@@ -8,22 +9,17 @@ import User from '../models/usersModel.js';
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
 
-  const passwordValidation = (password) => {
-    if (password.length > 6) errorRes(res, 500, 'password is too short');
-  };
-
   const validEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-  const emailValidation = (email) => {
-    if (email.match(validEmail)) errorRes(res, 500, 'your email is not valid');
-  };
-
   try {
-    if (!name || !email || !password) {
-      errorRes(res, 500, 'Some field are not field');
+    if (!email.match(validEmail)) {
+      return errorRes(res, 400, 'your email is not valid');
     }
-    if (!passwordValidation || !emailValidation || name.length < 1) {
-      return errorRes(res, 500, 'Check your fields and try again');
+    if (name.length < 1) {
+      return errorRes(res, 400, 'name is too short');
+    }
+    if (password.length < 6) {
+      return errorRes(res, 400, 'password is too short');
     }
 
     await bcrypt.hash(password, 10, async (err, hash) => {
@@ -39,6 +35,7 @@ export const register = async (req, res) => {
       return successHandler(res, 201, 'Created Successfully', user);
     });
   } catch (error) {
+    console.log(error);
     return errorRes(res, 500, 'There was problem Registering');
   }
 };
@@ -49,9 +46,6 @@ export const login = async (req, res) => {
   if (foundUser) {
     try {
       await bcrypt.compare(password, foundUser[0].password, (err, result) => {
-        if (err) {
-          return errorRes(res, 500, 'invalid password ');
-        }
         if (result) {
           const token = jwt.sign(
             { email: foundUser[0].email, id: foundUser[0]._id },
@@ -82,7 +76,7 @@ export const getAllUsers = async (req, res) => {
       users,
     });
   } catch (error) {
-    errorRes(res, 500, 'failed to get users');
+    return errorRes(res, 500, 'failed to get users');
   }
 };
 export const getOneUSer = async (req, res) => {

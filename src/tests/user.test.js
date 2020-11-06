@@ -32,7 +32,7 @@ describe('User related tests:', () => {
     await User.deleteMany({});
   });
 
-  it('User should create a user', async () => {
+  it('Should create a user', async () => {
     const res = await request(app).post('/users/register').send(mockUser);
     expect(res.status).to.be.equal(201);
     expect(res.body).to.have.property('success', true);
@@ -40,16 +40,31 @@ describe('User related tests:', () => {
     expect(res.body).to.have.property('message', 'Created Successfully');
   });
 
-  // it('Shouldnot create create a user(missing field)', async () => {
-  //   const res = await request(app).post('/users/register').send({
-  //     name: 'name',
-  //     email: 'email@gmail.com',
-  //   });
-  //   expect(res.status).to.be.equal(500);
-  //   expect(res.body).to.have.property('success', false);
-  //   expect(res.body).to.be.a('object');
-  //   expect(res.body).to.have.property('message', 'Created Successfully');
-  // });
+  it('Shouldnot create create a user(missing field)', async () => {
+    const res = await request(app).post('/users/register').send({
+      name: 'name',
+      email: 'email@gmail.com',
+    });
+    expect(res.status).to.be.equal(500);
+    expect(res.body).to.have.property('success', false);
+    expect(res.body).to.be.a('object');
+    expect(res.body).to.have.property(
+      'message',
+      'There was problem Registering',
+    );
+  });
+
+  it('Should not create create a user(short password)', async () => {
+    const res = await request(app).post('/users/register').send({
+      name: 'name',
+      email: 'email@gmail.com',
+      password: 'r',
+    });
+    expect(res.status).to.be.equal(400);
+    expect(res.body).to.have.property('success', false);
+    expect(res.body).to.be.a('object');
+    expect(res.body).to.have.property('message', 'password is too short');
+  });
 
   it('User should log in', async () => {
     await request(app).post('/users/register').send(mockUser);

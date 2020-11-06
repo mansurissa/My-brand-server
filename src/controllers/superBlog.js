@@ -54,7 +54,7 @@ export const getAllPosts = async (req, res) => {
       posts,
     });
   } catch (error) {
-    errorRes(res, 500, 'there was error getting all posts', error);
+    return errorRes(res, 500, 'there was error getting all posts', error);
   }
 };
 
@@ -78,7 +78,6 @@ export const deletePost = async (req, res) => {
     await Post.deleteOne({ _id: foundPost._id });
     return successHandler(res, 200, 'Deleted post successfully');
   } catch (error) {
-    console.log(error);
     return errorRes(res, 500, 'There was error deleting post', error);
   }
 };
@@ -102,7 +101,6 @@ export const updatePost = async (req, res) => {
     }
     return successHandler(res, 201, 'Updated post successfully', updatedPost);
   } catch (error) {
-    console.log(error);
     return errorRes(res, 500, 'There was a problem updating post', error);
   }
 };
@@ -124,7 +122,7 @@ export const comment = async (req, res) => {
 
     successHandler(res, 201, 'successfully commented', comment);
   } catch (error) {
-    errorRes(res, 500, 'there was error commenting');
+    return errorRes(res, 500, 'there was error commenting');
   }
 };
 
@@ -140,7 +138,7 @@ export const getAllCommentsOnPost = async (req, res) => {
       foundPost.comments,
     );
   } catch (error) {
-    errorRes(res, 500, 'there was error fetching all comments');
+    return errorRes(res, 500, 'there was error fetching all comments');
   }
 };
 export const oneComment = async (req, res) => {
@@ -148,8 +146,7 @@ export const oneComment = async (req, res) => {
     const oneCm = await Comment.findById(req.params.id);
     successHandler(res, 200, 'this is one comment', oneCm);
   } catch (error) {
-    console.log(error);
-    errorRes(res, 500, 'failed to fetch that');
+    return errorRes(res, 500, 'failed to fetch that');
   }
 };
 
@@ -161,8 +158,7 @@ export const like = async (req, res) => {
     await foundUser.save();
     successHandler(res, 200, 'successfully liked');
   } catch (error) {
-    console.log(error);
-    errorRes(res, 500, 'there was error while liking');
+    return errorRes(res, 500, 'there was error while liking');
   }
 };
 
@@ -185,6 +181,6 @@ export const getAllSubscribers = async (req, res) => {
       subscribers: allSubs,
     });
   } catch (error) {
-    errorRes(res, 500, 'Failed while fetching all subscribers');
+    return errorRes(res, 500, 'Failed while fetching all subscribers');
   }
 };
