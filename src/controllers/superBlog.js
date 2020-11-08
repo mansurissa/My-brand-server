@@ -9,7 +9,7 @@ export const createPost = async (req, res) => {
   const { title, body } = req.body;
   await Post.findOne({ title: `${title}` }, (err, result) => {
     if (result) {
-      errorRes(res, 500, 'The title alresdy exist');
+      return errorRes(res, 500, 'The title alresdy exist');
     }
   });
 
@@ -30,7 +30,6 @@ export const createPost = async (req, res) => {
       commentsCount: 0,
       views: 0,
       time: Date.now(),
-      // author: req.user.id,
     });
     if (req.files) {
       const tmp = req.files.image.tempFilePath;

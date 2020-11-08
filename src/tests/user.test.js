@@ -1,18 +1,12 @@
 import mocha from 'mocha';
 import chai from 'chai';
-// import jwt from 'jsonwebtoken';
 import request from 'supertest';
 import app from '../index.js';
 import User from '../models/usersModel.js';
 
 const { it, describe, beforeEach, afterEach } = mocha;
 const { expect } = chai;
-// const { JWT_KEY } = process.env;
 
-// const mockToken = `Bearer ${jwt.sign(
-//   { email: 'fake@email.com', id: 'fakeid' },
-//   JWT_KEY,
-// )}`;
 const mockUser = {
   name: 'tester',
   email: 'egide123@gmail.com',

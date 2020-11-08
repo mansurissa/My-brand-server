@@ -1,6 +1,7 @@
 import mocha from 'mocha';
 import chai from 'chai';
 import request from 'supertest';
+import path from 'path';
 import app from '../index.js';
 import Post from '../models/blogModel.js';
 import Subscriber from '../models/subscribers.js';
@@ -34,7 +35,11 @@ describe('Post related tests:', async () => {
   });
 
   it('Should create a post', async () => {
-    const res = await request(app).post('/blogs').send(mockPost);
+    const res = await request(app)
+      .post('/blogs')
+      .field('title', mockPost.title)
+      .field('body', mockPost.body)
+      .attach('image', path.resolve(__dirname, './img/testimage.png'));
     expect(res.status).to.be.equal(201);
     expect(res.body).to.be.have.property(
       'message',
@@ -92,7 +97,11 @@ describe('Post related tests:', async () => {
     const post = await Post.create(mockPost);
     await post.save();
 
-    const res = await request(app).patch(`/blogs/${post._id}`).send(postUpdate);
+    const res = await request(app)
+      .patch(`/blogs/${post._id}`)
+      .field('title', postUpdate.title)
+      .field('body', postUpdate.body)
+      .attach('image', path.resolve(__dirname, './img/testimage.png'));
     expect(res.status).to.be.equal(201);
     expect(res.body).to.have.property('success', true);
     expect(res.body).to.have.property('message', 'Updated post successfully');
