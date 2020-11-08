@@ -9,7 +9,7 @@ export const createPost = async (req, res) => {
   const { title, body } = req.body;
   await Post.findOne({ title: `${title}` }, (err, result) => {
     if (result) {
-      return errorRes(res, 500, 'The title alresdy exist');
+      errorRes(res, 500, 'The title alresdy exist');
     }
   });
 
@@ -39,7 +39,7 @@ export const createPost = async (req, res) => {
       post.imageId = result.public_id;
       post.save();
     }
-    successHandler(res, 201, 'new post created successfully', post);
+    return successHandler(res, 201, 'new post created successfully', post);
   } catch (error) {
     return errorRes(res, 500, 'Failed to create a post', error);
   }
@@ -48,7 +48,7 @@ export const createPost = async (req, res) => {
 export const getAllPosts = async (req, res) => {
   try {
     const posts = await Post.find().sort({ time: -1 });
-    successHandler(res, 200, 'successfully read all posts', {
+    return successHandler(res, 200, 'successfully read all posts', {
       postsCount: posts.length,
       posts,
     });
@@ -119,7 +119,7 @@ export const comment = async (req, res) => {
     post.commentsCount += 1;
     await post.save();
 
-    successHandler(res, 201, 'successfully commented', comment);
+    return successHandler(res, 201, 'successfully commented', comment);
   } catch (error) {
     return errorRes(res, 500, 'there was error commenting');
   }
@@ -130,7 +130,7 @@ export const getAllCommentsOnPost = async (req, res) => {
     const foundPost = await Post.findById(req.params.id)
       .populate('comments')
       .sort({ time: -1 });
-    successHandler(
+    return successHandler(
       res,
       200,
       'successfully fetched all comments',
@@ -143,7 +143,7 @@ export const getAllCommentsOnPost = async (req, res) => {
 export const oneComment = async (req, res) => {
   try {
     const oneCm = await Comment.findById(req.params.id);
-    successHandler(res, 200, 'this is one comment', oneCm);
+    return successHandler(res, 200, 'this is one comment', oneCm);
   } catch (error) {
     return errorRes(res, 500, 'failed to fetch that');
   }
@@ -155,7 +155,7 @@ export const like = async (req, res) => {
     if (!foundUser) errorRes(res, 404, 'cant find that post');
     foundUser.likes += 1;
     await foundUser.save();
-    successHandler(res, 200, 'successfully liked');
+    return successHandler(res, 200, 'successfully liked');
   } catch (error) {
     return errorRes(res, 500, 'there was error while liking');
   }
@@ -175,7 +175,7 @@ export const subscribe = async (req, res) => {
 export const getAllSubscribers = async (req, res) => {
   try {
     const allSubs = await Subscriber.find();
-    successHandler(res, 200, 'fetched all subscriber successfully', {
+    return successHandler(res, 200, 'fetched all subscriber successfully', {
       subsCount: allSubs.length,
       subscribers: allSubs,
     });
