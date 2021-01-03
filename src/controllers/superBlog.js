@@ -112,6 +112,7 @@ export const comment = async (req, res) => {
       name,
       email,
       message,
+      time: Date.now(),
     });
     const post = await Post.findById(req.params.id);
     if (!post) errorRes(res, 404, 'no such post found');
